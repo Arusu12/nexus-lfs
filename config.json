@@ -1,5 +1,5 @@
 {
-  "dir": "F:/files/",
+  "dir": "F:/file/",
   "notes": [
     {
       "device": "Arusu",
@@ -8,5 +8,6 @@
     }
   ],
   "host": "http://192.168.0.100:3000",
-  "Host": "Aerars"
+  "Host": "Aerars",
+  "port": "3000"
 }
