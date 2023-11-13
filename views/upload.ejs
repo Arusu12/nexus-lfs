@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LFS Upload</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(45deg, #1e469e, #912991);
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+    }
+
+    form {
+      max-width: 400px;
+      width: 80%;
+      padding: 20px;
+      background: #333;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #drop-area {
+      width: 100%;
+      margin: 50px;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    #file-input-label {
+      width: 90%;
+      margin: 50px;
+      padding: 10px;
+      background: #4c5baf;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-align: center;
+    }
+
+    button{
+      padding: 10px;
+      color: white;
+      background-color: #4c5baf;
+      outline: none;
+      border: none;
+      border-radius: 10px;
+    }
+    button:active{
+      background-color: #4c5aad57;
+    }
+    button:hover{
+      cursor: pointer;
+    }
+
+    #file-input-label:hover {
+      background: #4c5baf;
+    }
+
+    .uploadbtn{
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: x-large;
+      float: right;
+      border: #333 2px solid;
+      padding: 5px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #333;
+    }
+    .uploadbtn:hover{
+      background-color: #33333320;
+    }
+    a:hover{
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2><a class="uploadbtn" href="/files">Files</a></h2>
+  <h1>LFS Upload</h1>
+  <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+    <div id="drop-area">
+      <label for="file-input" id="file-input-label">
+        Drag and drop files here or click to select files
+      </label>
+      <input type="file" id="file-input" name="file" required>
+    </div>
+    <button type="submit">Upload File</button>
+  </form>
+
+  <script>
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.classList.add('drag-over');
+    });
+
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.classList.remove('drag-over');
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('drag-over');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        updateFileName();
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      updateFileName();
+    });
+
+    function updateFileName() {
+      const fileCount = fileInput.files.length;
+      const label = document.getElementById('file-input-label');
+      if (fileCount === 0) {
+        label.innerText = 'Select files';
+      } else if (fileCount === 1) {
+        label.innerText = fileInput.files[0].name;
+      } else {
+        label.innerText = `${fileCount} files selected`;
+      }
+    }
+  </script>
+</body>
+</html>

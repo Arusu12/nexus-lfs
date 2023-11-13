@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus LFS</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #87adfe, #ffc6ff);
+            height: 100vh;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a.button {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        #upload-btn {
+            background-color: #4CAF50;
+        }
+
+        #download-btn {
+            background-color: #008CBA;
+        }
+        section{
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        form{
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            background-color: #333;
+            border-radius: 10px;
+            color: white;
+        }
+        form div{
+            margin: 10px;
+            padding: 5px;
+        }
+        .det{
+            border: 2px white solid;
+            border-radius: 10px;
+        }
+        form input{
+            padding: 5px;
+            padding-left: 10px;
+            background-color: #33333360;
+            outline: none;
+            border: 2px white solid;
+            border-radius: 10px;
+            color: white;
+        }
+        .bar{
+            margin:2px;
+            display: grid;
+            grid-template-columns: 30% 70%;
+            align-items: center;
+        }
+        form button{
+            padding: 10px;
+      color: white;
+      background-color: #4c5baf;
+      outline: none;
+      border: none;
+      border-radius: 10px;
+        }
+        form button:hover{
+            cursor: pointer;
+            background-color: #4c5aad57;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Local File Server</h1>
+    </header>
+
+    <section>
+        <form id="configForm">
+            <div class="det"><%= config.host %></div>
+            <div class="bar">
+              <label>Host</label>
+              <input type="text" value="<%= config.Host %>" disabled>
+            </div>
+            <div class="bar">
+              <label>Directory</label>
+              <input type="text" name='dir' value="<%= config.dir %>">
+            </div>
+            <button type="button" onclick="submitForm()">Save</button>
+          </form>
+        <main>
+            <a href="/upload" class="button" id="upload-btn">Upload Files</a>
+            <a href="/files" class="button" id="download-btn">Download Files</a>
+        </main>
+    </section>
+
+    <script>
+        async function submitForm() {
+          try {
+            const formData = { dir: document.querySelector('[name="dir"]').value };
+        
+            const response = await fetch('/config', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+        
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+        
+            const data = await response.json();
+            console.log('Success:', data);
+            // Handle success, if needed
+          } catch (error) {
+            console.error('Error:', error);
+            // Handle error, if needed
+          }
+        }
+        </script>
+
+</body>
+</html>
